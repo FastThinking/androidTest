@@ -3,7 +3,6 @@ package test.allen.com.androidtest;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
@@ -13,8 +12,8 @@ import android.widget.TextView;
 
 import com.allen.BaseActivity;
 import com.allen.MyApplication;
-import com.allen.bean.User;
-import com.allen.greendao.gen.UserDao;
+import com.allen.bean.UserInfo;
+import com.allen.greendao.gen.UserInfoDao;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class MainActivity extends BaseActivity {
     Button add;
     @BindView(R.id.tv)
     TextView tv;
-    UserDao mUserDao;
+    UserInfoDao mUserDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +44,7 @@ public class MainActivity extends BaseActivity {
                         .setAction("Action", null).show();
             }
         });
-        mUserDao = MyApplication.getInstances().getDaoSession().getUserDao();
+        mUserDao = MyApplication.getInstances().getDaoSession().getUserInfoDao();
     }
 
     @Override
@@ -73,7 +72,7 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.add)
     public void addData() {
         try {
-            User mUser = new User((long) 2, "allen");
+            UserInfo mUser = new UserInfo((long) 2, "123", "allen");
             mUserDao.insert(mUser);//添加一个
             toast("allen 添加成功！");
             show();
@@ -90,7 +89,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.update)
     public void updateData() {
-        User mUser = new User((long) 2, "allen0803");
+        UserInfo mUser = new UserInfo((long) 2, "123","allen0803");
         mUserDao.update(mUser);
         show();
     }
@@ -102,7 +101,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void show() {
-        List<User> users = mUserDao.loadAll();
+        List<UserInfo> users = mUserDao.loadAll();
         String userName = "";
         for (int i = 0; i < users.size(); i++) {
             userName += users.get(i).getName() + ",";
