@@ -14,10 +14,11 @@ public class Note {
     private String userUuid;
     private String noteTitle;
 
-    @Generated(hash = 475372524)
-    public Note(Long id, String userUuid) {
+    @Generated(hash = 535473277)
+    public Note(Long id, String userUuid, String noteTitle) {
         this.id = id;
         this.userUuid = userUuid;
+        this.noteTitle = noteTitle;
     }
 
     @Generated(hash = 1272611929)
@@ -38,5 +39,13 @@ public class Note {
 
     public void setUserUuid(String userUuid) {
         this.userUuid = userUuid;
+    }
+
+    public String getNoteTitle() {
+        return this.noteTitle;
+    }
+
+    public void setNoteTitle(String noteTitle) {
+        this.noteTitle = noteTitle;
     }
 }
