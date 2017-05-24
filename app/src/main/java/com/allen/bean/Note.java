@@ -1,13 +1,13 @@
 package com.allen.bean;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * Created by allen on 2017/5/18.
  */
-@Entity(createInDb = false)
+@Entity(createInDb = true)
 public class Note {
     @Id(autoincrement = true)
     private Long id;

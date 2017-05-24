@@ -4,15 +4,17 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.allen.BaseActivity;
 import com.allen.MyApplication;
+import com.allen.bean.Note;
 import com.allen.bean.UserInfo;
+import com.allen.greendao.gen.NoteDao;
 import com.allen.greendao.gen.UserInfoDao;
 
 import java.util.List;
@@ -26,7 +28,12 @@ public class MainActivity extends BaseActivity {
     Button add;
     @BindView(R.id.tv)
     TextView tv;
+    @BindView(R.id.noteCount)
+    TextView noteCount;
+    @BindView(R.id.selectNote)
+    Button selectNote;
     UserInfoDao mUserDao;
+    NoteDao noteDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,7 @@ public class MainActivity extends BaseActivity {
             }
         });
         mUserDao = MyApplication.getInstances().getDaoSession().getUserInfoDao();
+        noteDao = MyApplication.getInstances().getDaoSession().getNoteDao();
     }
 
     @Override
@@ -89,7 +97,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.update)
     public void updateData() {
-        UserInfo mUser = new UserInfo((long) 2, "123","allen0803");
+        UserInfo mUser = new UserInfo((long) 2, "123", "allen0803");
         mUserDao.update(mUser);
         show();
     }
@@ -107,6 +115,33 @@ public class MainActivity extends BaseActivity {
             userName += users.get(i).getName() + ",";
         }
         tv.setText("查询全部数据==>" + userName);
+    }
+
+    @OnClick(R.id.addNote)
+    public void addNote() {
+        List<UserInfo> users = mUserDao.loadAll();
+        if (users.size() > 0) {
+            UserInfo userInfo = users.get(0);
+            Note note = new Note();
+            note.setUserUuid(userInfo.getUuid());
+            note.setNoteTitle("6月16号日记");
+            noteDao.save(note);
+            toast("笔记添加成功！");
+        }
+        showNoteCount();
+    }
+
+    @OnClick(R.id.selectNote)
+    public void showNoteCount() {
+        //清除缓存
+//        daoSession.clear();
+        mUserDao.detachAll();
+        UserInfo userInfo = mUserDao.load(2l);
+        String noteCountText = "笔记数量：0";
+        if (userInfo != null) {
+            noteCountText = "笔记数量：" + userInfo.getNotes().size();
+        }
+        noteCount.setText(noteCountText);
     }
 
 }
